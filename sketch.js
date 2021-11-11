@@ -1,7 +1,19 @@
 /*
-@author 
+@author Winry
 @date 2021-11-11
 
+coding plan:
+    disable sound (not its own commit)
+    fill in passage.js
+        start with the basics: do render without line wrapping (commit here)
+    enable sound and retype keyPressed function for familiarity
+    fill in passage.js
+        now do the line wrapping
+
+    this project is done by now. Additional projects:
+        Add wpm
+        Add accuracy up until now
+        Add text for what you've done (as of 2021-11-11)
 
  */
 
