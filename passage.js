@@ -11,20 +11,25 @@ class Passage {
 
 
     render() {
+        let MARGIN_TOP = 30 + textAscent()
+        let MARGIN_SIDES = 30
         // the bottom left corner of the current letter we are typing = cursor
 
         /*  display the entire passage without text wrap
          */
         for (let i = 0; i < this.text.length; i++) {
-            let MARGIN_TOP = 30 + textAscent()
-            let MARGIN_SIDES = 30
-
             let letter = this.text.charAt(i)
+            let cursor = new p5.Vector(
+                30 + textWidth(letter) * this.index,
+                30 + textAscent()
+            )
             // save the position of the ith character. we'll need this later
             text(
                 letter,
                 MARGIN_SIDES + i*textWidth(letter),
                 MARGIN_TOP)
+
+            rect(cursor.x, cursor.y+2, textWidth(letter), 2)
 
             /*  show the highlight box for correct vs incorrect after we type
              */

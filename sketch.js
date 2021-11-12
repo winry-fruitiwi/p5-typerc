@@ -49,13 +49,14 @@ function setup() {
     correctSound = loadSound('data/correct.wav')
     incorrectSound = loadSound('data/incorrect.wav')
 
-    passage = new Passage("This is Winry!")
+    passage = new Passage("One-liners are allowed here.")
 }
 
 
 function draw() {
     background(234, 34, 24)
 
+    noStroke()
     fill(0, 0, 100)
     passage.render()
 }
@@ -83,5 +84,6 @@ function keyPressed() {
         incorrectSound.play()
     }
 
-    passage.printCorrectList()
+    // this was a test. we no longer need it.
+    // passage.printCorrectList()
 }
