@@ -11,14 +11,20 @@ class Passage {
 
 
     render() {
-
         // the bottom left corner of the current letter we are typing = cursor
 
         /*  display the entire passage without text wrap
          */
+        for (let i = 0; i < this.text.length; i++) {
+            let MARGIN_TOP = 30 + textAscent()
+            let MARGIN_SIDES = 30
 
+            let letter = this.text.charAt(i)
             // save the position of the ith character. we'll need this later
-
+            text(
+                letter,
+                MARGIN_SIDES + i*textWidth(letter),
+                MARGIN_TOP)
 
             /*  show the highlight box for correct vs incorrect after we type
              */
@@ -47,7 +53,7 @@ class Passage {
                     if the width of that word + our cursor + current space >
                      limit, then newline
              */
-          
+
 
 
         /*  add current word top highlight horizontal bar
@@ -67,6 +73,7 @@ class Passage {
         */
 
         // TODO check if we're finished, otherwise we try to read [index+1]
+        }
         
     }
 

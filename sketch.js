@@ -3,17 +3,28 @@
 @date 2021-11-11
 
 coding plan:
-    disable sound (not its own commit)
-    fill in passage.js
-        start with the basics: do render without line wrapping (commit here)
-    enable sound and retype keyPressed function for familiarity
-    fill in passage.js
-        now do the line wrapping
+    display a one-line passage
+        print each variable separately with a cursor to keep track of where
+        each letter is
+    create a list of booleans to indicate correct and incorrect letters
+        fill in setCorrect() and setIncorrect()
+        test if the program recognizes if the user got a letter correct or
+        not by printing the result to the console
+    create the cursor under the current letter
+        translate from the cursor variable
+    display correct and incorrect letters
+        check list of correct letters. if the letter is correct, display a
+        green rectangle, otherwise display a red one
+    add text wrap
+        check if cursor + textWidth > width - margin
+    add full word wrap
+        if current letter is a space, find the next space to identify a word
+    add gray bar to show how large the word is
 
-    this project is done by now. Additional projects:
-        Add wpm
-        Add accuracy up until now
-        Add text for what you've done (as of 2021-11-11)
+    additions:
+        wpm
+        accuracy up until now
+        text for what you've done
 
  */
 
@@ -38,15 +49,14 @@ function setup() {
     correctSound = loadSound('data/correct.wav')
     incorrectSound = loadSound('data/incorrect.wav')
 
-    passage = new Passage("Developers often work in teams, but it is not" +
-        " uncommon to find a developer who works independently as a" +
-        " consultant.  ")
+    passage = new Passage("This is Winry!")
 }
 
 
 function draw() {
     background(234, 34, 24)
 
+    fill(0, 0, 100)
     passage.render()
 }
 
