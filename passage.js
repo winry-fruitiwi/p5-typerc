@@ -79,12 +79,14 @@ class Passage {
 
 
     getCurrentChar() {
+        return this.text.charAt(this.index)
     }
 
 
     // set the current char to correct
     setCorrect() {
-      
+        this.correctList.push(true)
+        this.index += 1
 
         console.assert(this.correctList.length === this.index)
     }
@@ -92,6 +94,13 @@ class Passage {
 
     // set the current char to be incorrect
     setIncorrect() {
+        this.correctList.push(false)
+        this.index += 1
+    }
 
+    printCorrectList() {
+        for (let correctOrIncorrect of this.correctList) {
+            console.log(correctOrIncorrect)
+        }
     }
 }

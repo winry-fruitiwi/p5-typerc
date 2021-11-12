@@ -82,4 +82,6 @@ function keyPressed() {
         passage.setIncorrect()
         incorrectSound.play()
     }
+
+    passage.printCorrectList()
 }
