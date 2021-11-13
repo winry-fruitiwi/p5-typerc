@@ -29,12 +29,33 @@ class Passage {
                 MARGIN_SIDES + i*textWidth(letter),
                 MARGIN_TOP)
 
-            rect(cursor.x, cursor.y+2, textWidth(letter), 2)
+            rect(cursor.x, cursor.y+2, textWidth(letter), 2, 2)
 
             /*  show the highlight box for correct vs incorrect after we type
              */
           
-
+            if (this.correctList[i] === true) {
+                noStroke()
+                fill(90, 80, 80, 30)
+                rect(
+                    MARGIN_SIDES + i*textWidth(letter),
+                    MARGIN_TOP - textAscent() - textDescent(),
+                    textWidth(letter),
+                    textAscent() + 2 * textDescent(),
+                    3
+                )
+                fill(0, 0, 100, 100)
+            } else if (this.correctList[i] === false) {
+                fill(0, 80, 80, 30)
+                rect(
+                    MARGIN_SIDES + i*textWidth(letter),
+                    MARGIN_TOP - textAscent() - textDescent(),
+                    textWidth(letter),
+                    textAscent() + 2 * textDescent(),
+                    3
+                )
+                fill(0, 0, 100, 100)
+            }
 
             /*  draw current letter above the highlight box in terms of z-index
              */

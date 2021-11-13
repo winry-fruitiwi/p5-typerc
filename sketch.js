@@ -49,7 +49,7 @@ function setup() {
     correctSound = loadSound('data/correct.wav')
     incorrectSound = loadSound('data/incorrect.wav')
 
-    passage = new Passage("One-liners are allowed here.")
+    passage = new Passage("You can type anything! Tigrex out.")
 }
 
 
