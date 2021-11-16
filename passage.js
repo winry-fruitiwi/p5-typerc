@@ -15,21 +15,58 @@ class Passage {
         let MARGIN_SIDES = 30
         // the bottom left corner of the current letter we are typing = cursor
 
+        // textWidth("letter or word") returns the same for each letter
+        // in the alphabet if you're working in a monospace font, giving
+        // lots of flexibility!
+        let x = MARGIN_SIDES
+        let y = MARGIN_TOP
+
         /*  display the entire passage without text wrap
          */
         for (let i = 0; i < this.text.length; i++) {
             let letter = this.text.charAt(i)
-            let cursor = new p5.Vector(
-                30 + textWidth(letter) * this.index,
-                30 + textAscent()
-            )
+
+            // let cursor = new p5.Vector(
+            //     30 + textWidth("Y") * this.index,
+            //     MARGIN_TOP
+            // )
+
+            // old-fashioned single letter wrap
+            // if (x + textWidth(letter) > width - MARGIN_SIDES) {
+            //     y += textAscent() + 2 * textDescent()
+            //     x = MARGIN_SIDES
+            // }
+
+            if (this.text.charAt(i) === " ") {
+                // we want to find the next whitespace from i
+                let currentDelimiter = i
+                let nextDelimiter = this.text.indexOf(" ", i + 1)
+                let nextWord = this.text.substring(
+                    currentDelimiter,
+                    nextDelimiter
+                )
+
+                // a test. shows that something doesn't work because of
+                // multiple words showing up in one line!
+                // text(nextWord, width/2, height-100)
+
+                if (x + textWidth(nextWord) > width - MARGIN_SIDES) {
+                    y += textAscent() + 2 * textDescent()
+                    x = MARGIN_SIDES
+                    // skips the whitespace
+                    continue
+                }
+            }
+
             // save the position of the ith character. we'll need this later
             text(
                 letter,
-                MARGIN_SIDES + i*textWidth(letter),
-                MARGIN_TOP)
+                x,
+                y)
 
-            rect(cursor.x, cursor.y+2, textWidth(letter), 2, 2)
+            if (i === this.index) {
+                rect(x, y+2, textWidth(letter), 2, 2)
+            }
 
             /*  show the highlight box for correct vs incorrect after we type
              */
@@ -38,8 +75,8 @@ class Passage {
                 noStroke()
                 fill(90, 80, 80, 30)
                 rect(
-                    MARGIN_SIDES + i*textWidth(letter),
-                    MARGIN_TOP - textAscent() - textDescent(),
+                    x,
+                    y - textAscent() - textDescent(),
                     textWidth(letter),
                     textAscent() + 2 * textDescent(),
                     3
@@ -48,8 +85,8 @@ class Passage {
             } else if (this.correctList[i] === false) {
                 fill(0, 80, 80, 30)
                 rect(
-                    MARGIN_SIDES + i*textWidth(letter),
-                    MARGIN_TOP - textAscent() - textDescent(),
+                    x,
+                    y - textAscent() - textDescent(),
                     textWidth(letter),
                     textAscent() + 2 * textDescent(),
                     3
@@ -82,6 +119,7 @@ class Passage {
 
 
 
+
         /*  add current word top highlight horizontal bar
          */
         // find index of next and previous whitespace chars
@@ -99,6 +137,7 @@ class Passage {
         */
 
         // TODO check if we're finished, otherwise we try to read [index+1]
+            x += textWidth("Y")
         }
         
     }

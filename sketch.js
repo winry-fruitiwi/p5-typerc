@@ -42,6 +42,7 @@ function preload() {
 
 
 function setup() {
+    // funny thing: I can set the width and the height, no change to canvas!
     createCanvas(640, 360)
     colorMode(HSB, 360, 100, 100, 100)
     textFont(font, 30)
@@ -49,7 +50,24 @@ function setup() {
     correctSound = loadSound('data/correct.wav')
     incorrectSound = loadSound('data/incorrect.wav')
 
-    passage = new Passage("You can type anything! Tigrex out.")
+    // we actually have to add a space, or else the last word will appear on
+    // a different line. That's fine if it's supposed to text wrap there,
+    // but it doesn't always happen. We might be able to fix this bug later,
+    // perhaps by automatic concatenation.
+    passage = new Passage("Yes! I made my cursor work and the text wrapping" +
+        " is all amazing! One thing crossed my mind, though: what about the" +
+        " vertical bounds? What happens when I cross that? ")
+
+    // this was a small test
+    // let testString = "Yes! Stewardesses! (just some random word)"
+    // let currentDelimiter = 4
+    // let nextDelimiter = testString.indexOf(" ", 5)
+    // let nextWord = testString.substring(
+    //     currentDelimiter,
+    //     nextDelimiter
+    // )
+
+    // print(nextWord)
 }
 
 
@@ -62,7 +80,6 @@ function draw() {
 }
 
 
-// retype this for familiarity
 function keyPressed() {
     // don't do anything if we detect SHIFT ALT CONTROL keycodes
     if (keyCode === SHIFT ||
@@ -84,6 +101,6 @@ function keyPressed() {
         incorrectSound.play()
     }
 
-    // this was a test. we no longer need it.
+    // this was a test.
     // passage.printCorrectList()
 }
