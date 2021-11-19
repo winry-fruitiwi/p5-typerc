@@ -47,16 +47,17 @@ function setup() {
     colorMode(HSB, 360, 100, 100, 100)
     textFont(font, 30)
 
+    // we don't use a stroke anywhere
+    noStroke()
+
     correctSound = loadSound('data/correct.wav')
     incorrectSound = loadSound('data/incorrect.wav')
 
     // we actually have to add a space, or else the last word will appear on
     // a different line. That's fine if it's supposed to text wrap there,
     // but it doesn't always happen. We might be able to fix this bug later,
-    // perhaps by automatic concatenation.
-    passage = new Passage("Yes! I made my cursor work and the text wrapping" +
-        " is all amazing! One thing crossed my mind, though: what about the" +
-        " vertical bounds? What happens when I cross that? ")
+    // perhaps by automatic concatenation. Please do not add a space at start!
+    passage = new Passage("I'm Tigrex and I'm back with proper text wrapping. ")
 
     // this was a small test
     // let testString = "Yes! Stewardesses! (just some random word)"
@@ -73,9 +74,6 @@ function setup() {
 
 function draw() {
     background(234, 34, 24)
-
-    noStroke()
-    fill(0, 0, 100)
     passage.render()
 }
 

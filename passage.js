@@ -11,6 +11,30 @@ class Passage {
 
 
     render() {
+
+        // TODO pseudocode for the bar on top of each word
+
+        /*
+           first I define a previousDelimiter, which is <= this.index
+           then I define a nextDelimiter, which is > this.index
+           also define coordinates, a list of all coordinates I visit
+           finally I define currentWord, which is a substring from
+           previousDelimiter to nextDelimiter
+
+           in the for loop:
+               push a vector into coordinates
+
+               to fix the whitespace problem, find a way to make currentWord
+               also include the current whitespace so I type the whitespace
+               as part of the end of the word, not as part of the start.
+
+           after the for loop:
+               create a rectangle starting from previousDelimiter's position
+               and have a width of textWidth("some letter") * currentWord.len
+               height should be very small, and y should be the y coordinate
+               minus the text ascent and text descent
+        */
+
         let MARGIN_TOP = 30 + textAscent()
         let MARGIN_SIDES = 30
         // the bottom left corner of the current letter we are typing = cursor
@@ -18,13 +42,44 @@ class Passage {
         // textWidth("letter or word") returns the same for each letter
         // in the alphabet if you're working in a monospace font, giving
         // lots of flexibility!
-        let x = MARGIN_SIDES
-        let y = MARGIN_TOP
+        let cursor_x = MARGIN_SIDES
+        let cursor_y = MARGIN_TOP
+
+        // define variables as listed above
+        // nextDelimiter should only be the current delimiter.
+        // TODO define three new variables with proper naming
+        let startOfCurrentWord = this.text.lastIndexOf(" ", this.index)+1
+
+        // TODO why is this necessary?
+        if (startOfCurrentWord === -1) {
+            startOfCurrentWord = 0
+        }
+
+        let endOfCurrentWord = this.text.indexOf(" ", this.index)
+
+        // TODO why does this case exist?
+        if (endOfCurrentWord === -1) {
+            endOfCurrentWord = this.text.length - 1
+        }
+
+        let previousWhitespace = 0
+        let nextWhitespace = this.text.indexOf(" ")
+        let currentWord = this.text.substring(
+            startOfCurrentWord,
+            endOfCurrentWord
+        )
+        // TODO add coordinates list
+        let coordinates = []
+
+        // switch to detect if I've wrapped
+        let wrapped = false
 
         /*  display the entire passage without text wrap
          */
         for (let i = 0; i < this.text.length; i++) {
             let letter = this.text.charAt(i)
+            // TODO push cursor_x and cursor_y as a p5.Vector into coordinates
+            coordinates.push(new p5.Vector(cursor_x, cursor_y))
 
             // let cursor = new p5.Vector(
             //     30 + textWidth("Y") * this.index,
@@ -32,114 +87,118 @@ class Passage {
             // )
 
             // old-fashioned single letter wrap
-            // if (x + textWidth(letter) > width - MARGIN_SIDES) {
-            //     y += textAscent() + 2 * textDescent()
-            //     x = MARGIN_SIDES
+            // if (cursor_x + textWidth(letter) > width - MARGIN_SIDES) {
+            //     cursor_y += textAscent() + 2 * textDescent()
+            //     cursor_x = MARGIN_SIDES
             // }
 
-            if (this.text.charAt(i) === " ") {
-                // we want to find the next whitespace from i
-                let currentDelimiter = i
-                let nextDelimiter = this.text.indexOf(" ", i + 1)
-                let nextWord = this.text.substring(
-                    currentDelimiter,
-                    nextDelimiter
-                )
-
-                // a test. shows that something doesn't work because of
-                // multiple words showing up in one line!
-                // text(nextWord, width/2, height-100)
-
-                if (x + textWidth(nextWord) > width - MARGIN_SIDES) {
-                    y += textAscent() + 2 * textDescent()
-                    x = MARGIN_SIDES
-                    // skips the whitespace
-                    continue
-                }
-            }
-
+            // Weirdly, text is only colored by fill. It should be colored
+            // by stroke, since I can imagine using a pen to write the
+            // letter, but a rectangle needs to be filled in with a bucket.
+            fill(0, 0, 100)
             // save the position of the ith character. we'll need this later
             text(
                 letter,
-                x,
-                y)
+                cursor_x,
+                cursor_y
+            )
 
+            // the cursor
             if (i === this.index) {
-                rect(x, y+2, textWidth(letter), 2, 2)
+                rect(cursor_x, cursor_y+2, textWidth(letter), 2, 2)
             }
 
             /*  show the highlight box for correct vs incorrect after we type
              */
           
             if (this.correctList[i] === true) {
-                noStroke()
                 fill(90, 80, 80, 30)
-                rect(
-                    x,
-                    y - textAscent() - textDescent(),
-                    textWidth(letter),
-                    textAscent() + 2 * textDescent(),
-                    3
-                )
-                fill(0, 0, 100, 100)
             } else if (this.correctList[i] === false) {
                 fill(0, 80, 80, 30)
-                rect(
-                    x,
-                    y - textAscent() - textDescent(),
-                    textWidth(letter),
-                    textAscent() + 2 * textDescent(),
-                    3
-                )
-                fill(0, 0, 100, 100)
+            } else {
+                noFill()
             }
 
-            /*  draw current letter above the highlight box in terms of z-index
-             */
-        
+            // highlight box
+            rect(
+                cursor_x - 1,
+                cursor_y - textAscent() - textDescent(),
+                textWidth(letter) + 1,
+                textAscent() + 2 * textDescent(),
+                3
+            )
 
+            // line wrapping
+            if (this.text.charAt(i) === " ") {
+                // we want to find the next whitespace from i
+                previousWhitespace = i
+                nextWhitespace = this.text.indexOf(" ", i + 1)
+                if (nextWhitespace === -1)
+                    nextWhitespace = this.text.length - 1
 
-            /*  modify cursor position to where the next letter should be
-                each highlight box should be 1 pixel bigger on left and right
-                1+1=2 total pixels of extra width
-             */
+                let wordOnEdge = this.text.substring(
+                    previousWhitespace+1,
+                    nextWhitespace // TODO
+                )
 
-            /*  let's do a simple word wrap, wrapping just by character!
-             */
+                text('.'+ wordOnEdge + '.', width/2, height/2)
 
+                // a test. shows that something doesn't work because of
+                // multiple words showing up in one line!
+                // text(nextWord, width/2, height-100)
 
-            // this is the horizontal coordinate where we must text wrap
+                // TODO add a switch keeping track of word wraps. if it's
+                //  on, I don't need to increment the x coordinate.
+                if (cursor_x + textWidth(wordOnEdge) > width - MARGIN_SIDES) {
+                    cursor_y += textAscent() + 2 * textDescent() + 5 // whitespace between lines
+                    cursor_x = MARGIN_SIDES
 
-            /*  if we're at a whitespace, determine if we need a new line:
-                    find the next whitespace
-                    the word between us and that whitespace is the next word
-                    if the width of that word + our cursor + current space >
-                     limit, then newline
-             */
-
-
-
-
-        /*  add current word top highlight horizontal bar
-         */
-        // find index of next and previous whitespace chars
-
-        // next delimiter index
-
-        // previous delimiter index
-
-        // +1 because we don't want the line to go over the previous
-        // whitespace char
-
-
-
-        /*  add cursor below current character
-        */
+                    wrapped = true
+                }
+            }
 
         // TODO check if we're finished, otherwise we try to read [index+1]
-            x += textWidth("Y")
+
+            if (wrapped === false)
+                cursor_x += textWidth(letter) + 1
+
+            // reset the switch
+            wrapped = false
         }
-        
+
+        // TODO add bar above the characters over here, where I don't need
+        //      to worry about extra variables
+
+        /* exact coordinates:
+             x = coordinates[previousDelimiter].x
+             y = coordinates[nextDelimiter].y - textAscent() - textDescent()
+             w = textWidth(" ") * currentWord.length
+             h = something small like 2
+             cornerRounding = decide this later
+        */
+
+        // TODO replace this with a score screen
+        if (this.index === this.text.length - 1)
+            noLoop()
+
+        else {
+            let x = coordinates[startOfCurrentWord].x
+            let y = coordinates[endOfCurrentWord].y - textAscent() - textDescent()
+            let w = textWidth(currentWord)
+            let h = 2
+
+            fill(0, 0, 50)
+            text(x, 3, height-80)
+            text(y.toString(), 3, height-60)
+            text(endOfCurrentWord.toString(), 3, height-40)
+            text(startOfCurrentWord.toString(), 3, height-20)
+            text("," + currentWord + ".", 3, height-100)
+
+            // we don't want a bar showing up if we are currently on a space char
+            if (this.text[this.index] !== ' ')
+                // bar on top of currentWord
+                rect(x, y, w, h)
+        }
     }
 
 
