@@ -5,4 +5,23 @@ class Passage {
         this.correctList = [] // booleans recording character correctness
     }
 
+    render() {
+
+    }
+
+    setCorrect() {
+
+    }
+
+    setIncorrect() {
+
+    }
+
+    printCorrectList() {
+
+    }
+
+    getCurrentChar() {
+
+    }
 }

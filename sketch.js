@@ -50,18 +50,26 @@ code plan:
 
 */
 
+let correctSound, incorrectSound, passage, font
 
 function preload() {
-
+    font = loadFont("data/lucida-console.ttf")
 }
 
 function setup() {
     createCanvas(640, 360)
     colorMode(HSB, 360, 100, 100, 100)
+
+    correctSound = loadSound('data/correct.wav')
+    incorrectSound = loadSound('data/incorrect.wav')
+
+    passage = new Passage("First test. Code happy.")
 }
 
 function draw() {
     background(234, 34, 24)
+
+    passage.render()
 }
 
 function keyPressed() {
@@ -77,13 +85,13 @@ function keyPressed() {
         sound, rewind it, passage.setCorrect(). otherwise, play and rewind
         the incorrect sound. passage.setIncorrect().
      */
-    // if (passage.getCurrentChar() === key) {
-    //     passage.setCorrect()
-    //     correctSound.play()
-    // } else {
-    //     passage.setIncorrect()
-    //     incorrectSound.play()
-    // }
+    if (passage.getCurrentChar() === key) {
+        passage.setCorrect()
+        correctSound.play()
+    } else {
+        passage.setIncorrect()
+        incorrectSound.play()
+    }
 
     // this was a test.
     // passage.printCorrectList()
