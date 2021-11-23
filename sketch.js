@@ -27,7 +27,7 @@ code plan:
         if correct, fill green
         if incorrect, fill red
         if not typed yet, no fill
-        TODO rectangle coordinates
+        TODO rect coordinates
     letter wrapping
         if currentCharPosition + textWidth(letter) > width-someMargin,
         update currentCharPosition
@@ -62,6 +62,7 @@ function setup() {
 
     correctSound = loadSound('data/correct.wav')
     incorrectSound = loadSound('data/incorrect.wav')
+    textFont(font, 30)
 
     passage = new Passage("First test. Code happy.")
 }
@@ -94,5 +95,5 @@ function keyPressed() {
     }
 
     // this was a test.
-    // passage.printCorrectList()
+    passage.printCorrectList()
 }
