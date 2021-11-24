@@ -39,6 +39,15 @@ class Passage {
 
             cursor_x += textWidth(letter) + 1
         }
+
+        // the position of the cursor
+        let cursor = coordinates[this.index]
+
+        // draw the cursor
+        noStroke()
+        // we need to add to the y so that the cursor isn't exactly on the
+        // letter
+        rect(cursor.x, cursor.y + 3, textWidth(this.text[this.index]), 2, 2)
     }
 
     setCorrect() {
