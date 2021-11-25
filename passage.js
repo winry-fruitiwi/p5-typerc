@@ -27,6 +27,15 @@ class Passage {
         // displays a one-line passage of text with a coordinates list
         for (let i = 0; i < this.text.length; i++) {
             let letter = this.text[i]
+
+            // before we push any coordinates, we should do the line wrapping
+            // if the current letter will go past width-MARGIN, new line
+            if (textWidth(letter) + cursor_x > width - MARGIN) {
+                // the 5 just makes sure there's no overlap or touching
+                cursor_y += textAscent() + textDescent() + 10
+                cursor_x = MARGIN
+            }
+
             coordinates.push(new p5.Vector(cursor_x, cursor_y))
 
             // fill applies to text, but stroke does not for some reason.
@@ -35,8 +44,38 @@ class Passage {
             // draw text at cursor_x, cursor_y
             text(letter, cursor_x, cursor_y)
 
-            // update cursor_x
+            // no matter what I don't want any stroke!
+            noStroke()
+            // if letter was typed correctly, fill transparent green
+            if (this.correctList[i] === true) {
+                fill(90, 80, 80, 30)
+            }
 
+            // else if letter was incorrect, fill transparent red
+            else if (this.correctList[i] === false) {
+                fill(0, 80, 80, 30)
+            }
+
+            // else, or if the letter is not typed yet, fill nothing
+            else {
+                noFill()
+            }
+
+            /* rect coordinates:
+                 x = cursor_x
+                 y = cursor_y - textAscent() - textDescent()
+                 w = textWidth(letter)
+                 h = textAscent() + textDescent
+             */
+
+            let x = cursor_x
+            let y = cursor_y - textAscent() - textDescent() - 1
+            let w = textWidth(letter)
+            let h = textAscent() + 2*textDescent() + 2
+
+            rect(x, y, w, h, 4)
+
+            // update cursor_x. TODO do not code past here!
             cursor_x += textWidth(letter) + 1
         }
 
@@ -45,6 +84,7 @@ class Passage {
 
         // draw the cursor
         noStroke()
+        fill(0, 0, 100)
         // we need to add to the y so that the cursor isn't exactly on the
         // letter
         rect(cursor.x, cursor.y + 3, textWidth(this.text[this.index]), 2, 2)
@@ -54,6 +94,10 @@ class Passage {
         // we want to push true onto the value stack and advance the index
         this.correctList.push(true)
         this.index++
+
+        if (this.index === this.text.length - 1) {
+            noLoop()
+        }
     }
 
     setIncorrect() {

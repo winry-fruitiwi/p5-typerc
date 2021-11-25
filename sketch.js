@@ -64,13 +64,7 @@ function setup() {
     incorrectSound = loadSound('data/incorrect.wav')
     textFont(font, 30)
 
-    passage = new Passage("First test. Code happy.")
-}
-
-function draw() {
-    background(234, 34, 24)
-
-    passage.render()
+    passage = new Passage("Second test with at least one line! Wee! ")
 }
 
 function keyPressed() {
@@ -95,5 +89,11 @@ function keyPressed() {
     }
 
     // this was a test.
-    passage.printCorrectList()
+    // passage.printCorrectList()
+}
+
+function draw() {
+    background(234, 34, 24)
+
+    passage.render()
 }
