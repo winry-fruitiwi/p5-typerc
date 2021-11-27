@@ -30,10 +30,35 @@ class Passage {
 
             // before we push any coordinates, we should do the line wrapping
             // if the current letter will go past width-MARGIN, new line
-            if (textWidth(letter) + cursor_x > width - MARGIN) {
-                // the 5 just makes sure there's no overlap or touching
-                cursor_y += textAscent() + textDescent() + 10
-                cursor_x = MARGIN
+            // if (textWidth(letter) + cursor_x > width - MARGIN) {
+            //     // the 5 just makes sure there's no overlap or touching
+            //     cursor_y += textAscent() + textDescent() + 10
+            //     cursor_x = MARGIN
+            // } // this is my old letter wrap
+
+            // first we just need to check if we're at a space.
+            if (this.text[i] === " ") {
+                // now that we know we're at a space, we can work with
+                // several whitespace variables that I can modify and update!
+
+                // we know where the first space is so we can just set it to i
+                let spaceAtI = i
+                // we need to use indexOf to find the second space. We go to
+                // i+1 because the index is inclusive
+                let nextSpaceFromI = this.text.indexOf(" ", i + 1)
+
+                // now we have the substring parameters for the next word!
+                let nextWord = this.text.substring(
+                    spaceAtI,
+                    nextSpaceFromI
+                )
+
+                // if the length of the next word is going to exceed width -
+                // MARGIN, wrap around.
+                if (cursor_x + textWidth(nextWord) > width - MARGIN) {
+                    cursor_x = MARGIN
+                    cursor_y += textAscent() + textDescent() + 10
+                }
             }
 
             coordinates.push(new p5.Vector(cursor_x, cursor_y))
@@ -75,7 +100,9 @@ class Passage {
 
             rect(x, y, w, h, 4)
 
-            // update cursor_x. TODO do not code past here!
+
+            // update cursor_x.
+            // TODO do not code past here!
             cursor_x += textWidth(letter) + 1
         }
 
@@ -95,7 +122,8 @@ class Passage {
         this.correctList.push(true)
         this.index++
 
-        if (this.index === this.text.length - 1) {
+        // try to check if we're at this.text.length, if so call noLoop()
+        if (this.index >= this.text.length - 1) {
             noLoop()
         }
     }

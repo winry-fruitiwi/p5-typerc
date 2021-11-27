@@ -64,7 +64,9 @@ function setup() {
     incorrectSound = loadSound('data/incorrect.wav')
     textFont(font, 30)
 
-    passage = new Passage("Second test with at least one line! Wee! ")
+    passage = new Passage("Second test with at least one line! Wee! Well now" +
+        " we have to get word wrap working, so why not add a couple more" +
+        " lines? ")
 }
 
 function keyPressed() {
