@@ -66,7 +66,8 @@ function setup() {
 
     passage = new Passage("Second test with at least one line! Wee! Well now" +
         " we have to get word wrap working, so why not add a couple more" +
-        " lines? ")
+        " lines? So we have word wrap done. I think it's time to celebrate" +
+        " by adding some more lines! ")
 }
 
 function keyPressed() {
