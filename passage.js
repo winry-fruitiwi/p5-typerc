@@ -132,15 +132,15 @@ class Passage {
         // beginning and the end, which are luckily marked by whitespace.
         let currentWordStart = this.text.lastIndexOf(" ", this.index)
 
-        if (currentWordStart === -1) {
-            currentWordStart = 0
-        }
+        // if (currentWordStart === -1) {
+        //     currentWordStart = 0
+        // }
 
         let currentWordEnd = this.text.indexOf(" ", this.index)
 
         let currentWord = this.text.substring(
-            currentWordStart,
-            currentWordEnd
+            currentWordStart+1,
+            currentWordEnd+1
         )
 
         /*
@@ -152,15 +152,15 @@ class Passage {
             let h = 2
         */
 
-        let x = coordinates[currentWordStart].x
-        let y = coordinates[currentWordStart].y - textAscent() - textDescent()-2
+        let x = coordinates[currentWordStart + 1].x
+        let y = coordinates[currentWordStart + 1].y - textAscent() - textDescent()-2
 
         let w = textWidth(currentWord)
         let h = 2
 
         text("." + currentWord + ".", width/2, height-60)
 
-        fill(0, 0, 30)
+        fill(0, 0, 50)
         noStroke()
         rect(x, y, w, h)
     }
