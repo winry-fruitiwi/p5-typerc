@@ -5,6 +5,7 @@ class Passage {
         this.correctList = [] // booleans recording character correctness
     }
 
+    // TODO start of render
     render() {
         // There are two indices: the index the user is at, and the index in
         // the loop that iterates through my text and displays it each frame
@@ -26,7 +27,7 @@ class Passage {
 
         // toggle for if we don't increment our x-value. The only time when we
         // don't is right after wrapping
-        let incrementXRequired = false
+        // let incrementXRequired = false
 
         // displays a one-line passage of text with a coordinates list
         for (let i = 0; i < this.text.length; i++) {
@@ -103,16 +104,18 @@ class Passage {
                     cursor_y += textAscent() + textDescent() + 10
 
                     // we just wrapped around so we don't need to increment x!
-                    incrementXRequired = true
+                    // actually we don't need this, we just need to continue
+                    // incrementXRequired = true
+                    continue
                 }
             }
 
             // update cursor_x.
             // TODO do not code past here!
-            if (incrementXRequired === false)
+            // if (incrementXRequired === false)
                 cursor_x += textWidth(letter) + 1
 
-            incrementXRequired = false
+            // incrementXRequired = false
         }
 
         // the position of the cursor
@@ -124,8 +127,45 @@ class Passage {
         // we need to add to the y so that the cursor isn't exactly on the
         // letter
         rect(cursor.x, cursor.y + 3, textWidth(this.text[this.index]), 2, 2)
+
+        // we need to find the current word. First we need to find the
+        // beginning and the end, which are luckily marked by whitespace.
+        let currentWordStart = this.text.lastIndexOf(" ", this.index)
+
+        if (currentWordStart === -1) {
+            currentWordStart = 0
+        }
+
+        let currentWordEnd = this.text.indexOf(" ", this.index)
+
+        let currentWord = this.text.substring(
+            currentWordStart,
+            currentWordEnd
+        )
+
+        /*
+            exact rectangle coordinates:
+            let x = coordinates[this.index].x
+            let y = coordinates[this.index].y - 2
+
+            let w = textWidth(currentWord)
+            let h = 2
+        */
+
+        let x = coordinates[currentWordStart].x
+        let y = coordinates[currentWordStart].y - textAscent() - textDescent()-2
+
+        let w = textWidth(currentWord)
+        let h = 2
+
+        text("." + currentWord + ".", width/2, height-60)
+
+        fill(0, 0, 30)
+        noStroke()
+        rect(x, y, w, h)
     }
 
+    // TODO start of helper functions
     setCorrect() {
         // we want to push true onto the value stack and advance the index
         this.correctList.push(true)
