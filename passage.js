@@ -158,8 +158,6 @@ class Passage {
         let w = textWidth(currentWord)
         let h = 2
 
-        text("." + currentWord + ".", width/2, height-60)
-
         fill(0, 0, 50)
         noStroke()
         rect(x, y, w, h)

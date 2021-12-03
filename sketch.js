@@ -48,8 +48,35 @@ code plan:
         accuracy
         wpm
 
-*/
+        for accuracy, I can just take the length of my correctList and
+        figure out how many of them are correct, then give me the accuracy.
 
+        wpm:
+            use millis() to find wpm of current passage
+                divide length of current passage by 5 to get num words.
+                divide millis() by 1000 to get seconds.
+                divide seconds by 60 to get minutes.
+                divide numWords by minutes.
+             use millis() to find wpm of current word
+                I think I just need to take the length of my current word,
+                multiply the millis by 1/60000, divide the length by the
+                minutes, and display some sort of marking for that.
+
+        loading and result screens:
+            implement loading screen
+                for a fixed amount of time, display "Unlocking..." with a
+                makeshift lock. Then, the lock opens, creating a burst of
+                particles and then the text displays "Unlocked!"
+            implement results screen
+                the unlocked makeshift lock will appear again with a message
+                "Locking..." After a random amount of time between 1s and
+                3s, the lock will close with another particle burst with
+                "Locked!" as the text. Then the results will show up.
+            add a smooth transition to both screens
+                maybe save an image of the finished state and transition there?
+                Other methods include: putting different layers in front,
+                simply transitioning after some time.
+*/
 let correctSound, incorrectSound, passage, font
 
 function preload() {
