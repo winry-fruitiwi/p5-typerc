@@ -91,8 +91,7 @@ function setup() {
     incorrectSound = loadSound('data/incorrect.wav')
     textFont(font, 30)
 
-    passage = new Passage("Second test with at least one line! Now I'm" +
-        " testing my current words. ")
+    passage = new Passage("hey! i ")
 }
 
 function keyPressed() {

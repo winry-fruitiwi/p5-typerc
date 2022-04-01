@@ -21,7 +21,7 @@ class Passage {
         let cursor_x = MARGIN
         // p5.js has its text function start at the bottom left. That means
         // if we started at the margin, at some point the textAscent is
-        // going to get bigger than the margin and you won't be able to see
+        // going to get bigger than the margin, and you won't be able to see
         // the letter.
         let cursor_y = MARGIN + textAscent()
 
@@ -85,7 +85,7 @@ class Passage {
                 // now that we know we're at a space, we can work with
                 // several whitespace variables that I can modify and update!
 
-                // we know where the first space is so we can just set it to i
+                // we know where the first space is, so we can just set it to i
                 let spaceAtI = i
                 // we need to use indexOf to find the second space. We go to
                 // i+1 because the index is inclusive
@@ -103,7 +103,7 @@ class Passage {
                     cursor_x = MARGIN
                     cursor_y += textAscent() + textDescent() + 10
 
-                    // we just wrapped around so we don't need to increment x!
+                    // we just wrapped around, so we don't need to increment x!
                     // actually we don't need this, we just need to continue
                     // incrementXRequired = true
                     continue
@@ -119,7 +119,12 @@ class Passage {
         }
 
         // the position of the cursor
-        let cursor = coordinates[this.index]
+        let cursor
+        try {
+            cursor = coordinates[this.index]
+        } catch {
+            noLoop()
+        }
 
         // draw the cursor
         noStroke()
@@ -151,9 +156,14 @@ class Passage {
             let w = textWidth(currentWord)
             let h = 2
         */
+        let x, y
 
-        let x = coordinates[currentWordStart + 1].x
-        let y = coordinates[currentWordStart + 1].y - textAscent() - textDescent()-2
+        try {
+            x = coordinates[currentWordStart + 1].x
+            y = coordinates[currentWordStart + 1].y - textAscent() - textDescent()-2
+        } catch {
+            noLoop()
+        }
 
         let w = textWidth(currentWord)
         let h = 2
@@ -161,6 +171,22 @@ class Passage {
         fill(0, 0, 50)
         noStroke()
         rect(x, y, w, h)
+
+        /* TODO WPM and accuracy */
+        // accuracy: first find the ratio of true to false statements
+        let correct = 0
+        for (let accuracy of this.correctList) {
+            if (accuracy) {
+                correct++
+            }
+        }
+
+        fill(0, 0, 100)
+        let userAccuracy = correct / this.correctList.length
+        if (this.correctList.length === 0) {
+            return
+        }
+        text(`${round(userAccuracy*100)}%`, width/2, height - textDescent())
     }
 
     // TODO start of helper functions
@@ -188,6 +214,10 @@ class Passage {
 
     getCurrentChar() {
         // we want to grab the character this.index is on.
-        return this.text[this.index]
+        try {
+            return this.text[this.index]
+        } catch {
+            noLoop()
+        }
     }
 }
