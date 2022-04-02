@@ -91,15 +91,31 @@ function setup() {
     incorrectSound = loadSound('data/incorrect.wav')
     textFont(font, 30)
 
-    passage = new Passage("hey! i ")
+    passage = new Passage("Hey! I'm doing WPM calculations now. As you can" +
+        " see, I've already done the accuracy (but it was in the wrong" +
+        " place, which I fixed). Now I'll be putting the WPM in the right" +
+        " place. ")
 }
 
 function keyPressed() {
-    // don't do anything if we detect SHIFT ALT CONTROL keycodes
+    // don't do anything if we detect SHIFT ALT CONTROL or F1-F12 keycodes
     if (keyCode === SHIFT ||
         keyCode === ALT ||
         keyCode === CONTROL ||
-        keyCode === 20) { // this is capslock
+        keyCode === 20 || // this is capslock
+        keyCode === 112 ||
+        keyCode === 113 ||
+        keyCode === 114 ||
+        keyCode === 115 ||
+        keyCode === 116 ||
+        keyCode === 117 ||
+        keyCode === 118 ||
+        keyCode === 119 ||
+        keyCode === 110 ||
+        keyCode === 111 ||
+        keyCode === 112 ||
+        keyCode === 113
+    ) {
         return
     }
 

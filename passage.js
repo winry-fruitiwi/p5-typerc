@@ -3,6 +3,7 @@ class Passage {
         this.text = text
         this.index = 0 // where in the passage we're currently typing
         this.correctList = [] // booleans recording character correctness
+        this.millisStarted = 0 // where we start the first character
     }
 
     // TODO start of render
@@ -174,6 +175,24 @@ class Passage {
 
         /* TODO WPM and accuracy */
         // accuracy: first find the ratio of true to false statements
+        if (this.correctList.length === 0) {
+            return
+        }
+
+        // wpm: word = 5 letters. Find millis() in minutes
+        let milliseconds = millis()
+        let minutes = (milliseconds/1000)/60
+
+        // find number of words (sometimes there will be decimals though)
+        let words = this.correctList.length/5
+
+        // divide number of words by millis()
+        let wpm = words/minutes
+
+        // display with text
+        fill(0, 0, 100)
+        text(`${round(wpm)}wpm`, width/2 - 10, height - textDescent() - 10)
+
         let correct = 0
         for (let accuracy of this.correctList) {
             if (accuracy) {
@@ -181,12 +200,12 @@ class Passage {
             }
         }
 
+        // then find the accuracy. If there is no accuracy, then there is
+        // also no WPM, so we return from the function.
         fill(0, 0, 100)
         let userAccuracy = correct / this.correctList.length
-        if (this.correctList.length === 0) {
-            return
-        }
-        text(`${round(userAccuracy*100)}%`, width/2, height - textDescent())
+
+        text(`${round(userAccuracy*100)}%`, width/2 + textWidth(`${round(wpm)}wpm`) + 10, height - textDescent() - 10)
     }
 
     // TODO start of helper functions
@@ -198,7 +217,8 @@ class Passage {
         // try to check if we're at this.text.length, if so call noLoop()
         if (this.index >= this.text.length - 1) {
             noLoop()
-        }
+        } if (this.correctList.length === 1)
+            this.millisStarted = millis()
     }
 
     setIncorrect() {
