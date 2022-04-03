@@ -124,7 +124,7 @@ class Passage {
         try {
             cursor = coordinates[this.index]
         } catch {
-            noLoop()
+            return
         }
 
         // draw the cursor
@@ -163,7 +163,7 @@ class Passage {
             x = coordinates[currentWordStart + 1].x
             y = coordinates[currentWordStart + 1].y - textAscent() - textDescent()-2
         } catch {
-            noLoop()
+            return
         }
 
         let w = textWidth(currentWord)
@@ -180,7 +180,7 @@ class Passage {
         }
 
         // wpm: word = 5 letters. Find millis() in minutes
-        let milliseconds = millis()
+        let milliseconds = millis() - this.millisStarted
         let minutes = (milliseconds/1000)/60
 
         // find number of words (sometimes there will be decimals though)
@@ -216,7 +216,7 @@ class Passage {
 
         // try to check if we're at this.text.length, if so call noLoop()
         if (this.index >= this.text.length - 1) {
-            noLoop()
+            doneTyping = true
         } if (this.correctList.length === 1)
             this.millisStarted = millis()
     }
@@ -226,6 +226,8 @@ class Passage {
         // with a sound and let them move on.
         this.correctList.push(false)
         this.index++
+        if (this.index >= this.text.length - 1)
+            doneTyping = true
     }
 
     printCorrectList() {

@@ -77,7 +77,7 @@ code plan:
                 Other methods include: putting different layers in front,
                 simply transitioning after some time.
 */
-let correctSound, incorrectSound, passage, font
+let correctSound, incorrectSound, passage, font, doneTyping = false
 
 function preload() {
     font = loadFont("data/lucida-console.ttf")
@@ -91,10 +91,7 @@ function setup() {
     incorrectSound = loadSound('data/incorrect.wav')
     textFont(font, 30)
 
-    passage = new Passage("Hey! I'm doing WPM calculations now. As you can" +
-        " see, I've already done the accuracy (but it was in the wrong" +
-        " place, which I fixed). Now I'll be putting the WPM in the right" +
-        " place. ")
+    passage = new Passage("test ")
 }
 
 function keyPressed() {
@@ -123,10 +120,10 @@ function keyPressed() {
         sound, rewind it, passage.setCorrect(). otherwise, play and rewind
         the incorrect sound. passage.setIncorrect().
      */
-    if (passage.getCurrentChar() === key) {
+    if (passage.getCurrentChar() === key && !doneTyping) {
         passage.setCorrect()
         correctSound.play()
-    } else {
+    } else if (passage.getCurrentChar() !== key && !doneTyping) {
         passage.setIncorrect()
         incorrectSound.play()
     }
@@ -138,5 +135,12 @@ function keyPressed() {
 function draw() {
     background(234, 34, 24)
 
-    passage.render()
+    if (!doneTyping) {
+        passage.render()
+    } else {
+        // later I'll put a score screen render here. I'll just make text.
+        textAlign(CENTER)
+        text(
+            "You're done typing! Great job!", width/2, height/2)
+    }
 }
